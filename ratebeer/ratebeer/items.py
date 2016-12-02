@@ -16,5 +16,5 @@ class BeerItem(scrapy.Item):
     brewer = scrapy.Field()
     review_count = scrapy.Field()
     score = scrapy.Field()
-
+    state = scrapy.Field()
     pass

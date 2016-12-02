@@ -27,7 +27,7 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 5
 ITEM_PIPELINES = {'ratebeer.pipelines.RatebeerPipeline': 100, }
 # DUPEFILTER_CLASS=scrapy_redis.dupefilters.RFTDupeFilter
 # The download delay setting will honor only one of:

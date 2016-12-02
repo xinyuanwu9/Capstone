@@ -1,22 +1,29 @@
 import scrapy
+import re
 from ratebeer.items import BeerItem
 from scrapy import Selector
 
 class RateBeerSpider(scrapy.Spider):
     name = "ratebeer_spider"
     allowed_domains = ["http://www.ratebeer.com/"]
+
     def start_requests(self):
         start_url = "https://www.ratebeer.com/BestInMyArea.asp?CountryID=213&StateID="
         urls = [start_url + str(i) for i in range(1, 6)]
         for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+            request = scrapy.Request(url=url, callback=self.parse)
+            yield request
 
     def parse(self, response):
         item = BeerItem()
+
         beer_table = response.xpath('//*[@id="rbbody"]/div[3]/div[2]/table[2]').extract()
+
         for i in range(2, 27):
             # beer_row = Selector(text=beer_table[0]).xpath('//tr[i]').extract()
             # for j in range(1, 6):
+            state = response.xpath('//*[@id="rbbody"]/div[3]/div[2]/h4[2]/text()').extract()[0]
+            item["state"] = re.search(r'(?<=FROM )(\w+)( )?(\w+)?(?=,)', state).group(0)
             try:
                 beer_rank = Selector(text=beer_table[0]).xpath('//*/tr['+str(i)+']/td[1]/text()').extract()[0]
             except:

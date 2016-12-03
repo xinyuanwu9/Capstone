@@ -12,7 +12,7 @@ class BeerReviewSpider(scrapy.Spider):
 
     def start_requests(self):
         start_url = "https://www.ratebeer.com/BestInMyArea.asp?CountryID=213&StateID="
-        urls = [start_url + str(i) for i in range(1, 52)]
+        urls = [start_url + str(i) for i in range(1, 52)] #State ID
         for url in urls:
             request = scrapy.Request(url=url, callback=self.parse)
             yield request
@@ -21,17 +21,13 @@ class BeerReviewSpider(scrapy.Spider):
 
         beer_table = response.xpath('//*[@id="rbbody"]/div[3]/div[2]/table[2]').extract()
 
+        # number of beers on state page
         for i in range(2, 27):
-            # beer_row = Selector(text=beer_table[0]).xpath('//tr[i]').extract()
-            # for j in range(1, 6):
-            # state = response.xpath('//*[@id="rbbody"]/div[3]/div[2]/h4[2]/text()').extract()[0]
-            # item["state"] = re.search(r'(?<=FROM )(\w+)( )?(\w+)?(?=,)', state).group(0)
+
             root_url = "https://www.ratebeer.com"
             beer_url = \
                 Selector(text=beer_table[0]).xpath('//tr['+str(i)+']/td[2]/a/@href').extract()[0].encode("utf-8")
-            # except:
-            #     beer_url = None
-            # item['beer_url'] = beer_url
+
             print "-" * 50
             print root_url + beer_url
             prod_url = root_url + beer_url
@@ -40,30 +36,36 @@ class BeerReviewSpider(scrapy.Spider):
             print rev_count
 
             if int(rev_count) <= 10:
-                print "I SHOULD BE HERE!!!!!!!!!!"
+                print "One Page"
                 request = Request(prod_url, callback=self.parse_reviews)
             else:
-                print "NOPE!!!!!!!!!!!!"
+                print "Multiple Pages"
                 request = Request(prod_url, callback=self.parse_revpg_urls)
             yield request
 
     def parse_revpg_urls(self, response):
         root_url = "https://www.ratebeer.com"
-        i = 1
+        # i = 1
+        revpg_url = response.xpath('//*[@id="container"]/div[2]/div[2]/div[9]/a[1]/@href').extract()
 
-        revpg_url = response.xpath('//*[@id="container"]/div[2]/div[2]/div[9]/a['+str(i)+']/@href').extract()
         if revpg_url:
+            last_pgnum = response.xpath('//*[@id="container"]/div[2]/div[2]/div[9]/a/text()').extract()[-1]
             print "page num exists"
-            firstpg_url = revpg_url[0][:-2]+"1/"
-            pgs_urls = [root_url+firstpg_url]
+            # firstpg_url = revpg_url[0][:-2]+"1/"
+            # pgs_urls = [root_url+firstpg_url]
+            pgs_urls = [root_url + re.sub('[0-9]+\/$', '', response.xpath('//*[@id="container"]/div[2]/div[2]/div[9]/a[1]/@href')
+                                                                          .extract()[0]) + str(i) + "/" for i in range(1, int(last_pgnum)+1)]
 
-            while revpg_url:
-                pgs_urls.append(root_url+revpg_url[0])
-                # last_page = review_url[0]
-                # print last_page
-                i += 1
-                revpg_url = \
-                    response.xpath('//*[@id="container"]/div[2]/div[2]/div[9]/a['+str(i)+']/@href').extract()
+            # while revpg_url:
+            #     last_page = revpg_url[0]
+            #     # pgs_urls.append(root_url+revpg_url[0])
+            #
+            #     # print last_page
+            #     # i += 1
+            #     revpg_url = \
+            #         response.xpath('//*[@id="container"]/div[2]/div[2]/div[9]/a['+str(i)+']/@href').extract()
+            # # last_pgnum = re.search(r'[0-9]+\/$', revpg_url[0]).group(0).strip("/")
+            # print last_pgnum
 
             for url in pgs_urls:
                 print "#" * 50

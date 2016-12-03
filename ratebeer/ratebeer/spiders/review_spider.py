@@ -40,8 +40,10 @@ class BeerReviewSpider(scrapy.Spider):
             print rev_count
 
             if int(rev_count) <= 10:
+                print "I SHOULD BE HERE!!!!!!!!!!"
                 request = Request(prod_url, callback=self.parse_reviews)
             else:
+                print "NOPE!!!!!!!!!!!!"
                 request = Request(prod_url, callback=self.parse_revpg_urls)
             yield request
 

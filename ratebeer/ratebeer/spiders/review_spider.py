@@ -12,7 +12,7 @@ class BeerReviewSpider(scrapy.Spider):
 
     def start_requests(self):
         start_url = "https://www.ratebeer.com/BestInMyArea.asp?CountryID=213&StateID="
-        urls = [start_url + str(i) for i in range(1, 52)] #State ID
+        urls = [start_url + str(i) for i in range(14, 27)] #State ID
         for url in urls:
             request = scrapy.Request(url=url, callback=self.parse)
             yield request
@@ -77,7 +77,7 @@ class BeerReviewSpider(scrapy.Spider):
         item = ReviewItem()
         try:
             # beer_name = response.xpath('//*[@id="container"]/div[1]/div[2]/div/span/div/h1/span/text()').extract()[0]
-            beer_name = response.xpath('//*[@itemprop="name"]/text()').extract()[0]
+            beer_name = response.xpath('//*[@itemprop="name"]/text()').extract()[0].encode('utf-8')
         except:
             beer_name = None
         print beer_name

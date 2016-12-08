@@ -4,8 +4,9 @@ import re
 import numpy as np
 import pandas as pd
 
-# proc_full function returns a nested list.
-# Each element is a list of words generated from a review
+# proc_test function is used for test cleaning results
+# proc_full function is used for cleaning all reviews
+# result is a nested list. Each element is a list of words generated from a review
 
 def get_review_full():
     part1 = pd.read_csv('../ScrapedData/beerreview1_13.csv', usecols = ['review'])

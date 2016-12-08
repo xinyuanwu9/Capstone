@@ -4,6 +4,9 @@ import re
 import numpy as np
 import pandas as pd
 
+# proc_full function returns a nested list.
+# Each element is a list of words generated from a review
+
 def get_review_full():
     part1 = pd.read_csv('../ScrapedData/beerreview1_13.csv', usecols = ['review'])
     part2 = pd.read_csv('../ScrapedData/beerreview14_26.csv', usecols = ['review'])
@@ -27,10 +30,11 @@ def get_random_review(n = 20, seed = 0):
     return [rev[x] for x in r2]
 
 def clean_str(s):
-    s = s.lower().replace('\xe2\x80\x99', '\'').replace('|', ' ').replace('\r', '').replace('\n', ' ').replace('/', ' ')
+    s = s.lower().replace('\xe2\x80\x99', '\'').replace('|', ' ').\
+        replace('\r', ' ').replace('\n', ' ').replace('/', ' ')
     s = re.sub('[.:\',\-!;"()?]', '', s)
-    s = re.sub('\s+', ' ', s)
-    return s.strip().split(' ')
+    s = re.sub('\s+', ' ', s).strip().split(' ')
+    return s
 
 def proc_test(n = 20, seed = 0):
     l = get_random_review(n, seed)

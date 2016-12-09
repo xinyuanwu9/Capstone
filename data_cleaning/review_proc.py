@@ -1,3 +1,9 @@
+### this script is for cleaning beer reviews
+### run do_this_shit fuction to perform the entire process, two .p files will be generated
+### first file is a list of beer names
+### second file is a nested list, each inner list is a list of words
+### the index of beer name matches the index of words list
+
 import re
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -5,13 +11,9 @@ import numpy as np
 import pandas as pd
 import pickle
 
-### proc_test function is used for test cleaning results
-### proc_full function is used for cleaning all reviews
-### result is a nested list. Each element is a list of words generated from a review
-
 # function set 1. get nested list of words
 def get_review_full():
-    '''output: list, each element is a review str'''
+    '''output: list, with each element being a review str'''
     part1 = pd.read_csv('github/ScrapedData/beerreview1_13.csv', usecols = ['review'])
     part2 = pd.read_csv('github/ScrapedData/beerreview14_26.csv', usecols = ['review'])
     part3 = pd.read_csv('github/ScrapedData/beerreview27_39.csv', usecols = ['review'])
@@ -20,8 +22,8 @@ def get_review_full():
     return ['' if type(x) is not str else x for x in list(full['review'])]
 
 def get_random_review(n = 20, seed = 0):
-    '''input: n = number of review you want to generate, seed = random seed number
-       output: list, each element is a review str'''
+    '''input: n = number of review you want to generate, seed = random seed
+       output: list, with each element being a review str'''
     assert n > 0, 'number of reviews must be greater than 0'
     assert n <= 100, 'don\'t do more than 100...'
     assert type(n) is int, 'number of reviews must be an integer'
@@ -37,7 +39,7 @@ def get_random_review(n = 20, seed = 0):
     return [rev[x] for x in r2]
 
 def get_beername_full():
-    '''output: list of all reviews, each element is a review str'''
+    '''output: list of beer names. Each element is a beer name'''
     part1 = pd.read_csv('github/ScrapedData/beerreview1_13.csv', usecols = ['beer_name'])
     part2 = pd.read_csv('github/ScrapedData/beerreview14_26.csv', usecols = ['beer_name'])
     part3 = pd.read_csv('github/ScrapedData/beerreview27_39.csv', usecols = ['beer_name'])
@@ -50,7 +52,7 @@ def get_beername_full():
 
 def clean_str(s):
     '''input: review str
-       output: list of words'''
+       output: list of words after proper cleaning'''
     s = s.lower().replace('\xe2\x80\x99', '\'').replace('|', ' ').\
         replace('\r', ' ').replace('\n', ' ').replace('/', ' ')
     s = re.sub('[.:\',\-!;"()?]', '', s)
@@ -62,12 +64,12 @@ def clean_str(s):
     return lst
 
 def proc_review_test(n = 20, seed = 0):
-    '''test function'''
+    '''test the performace of clean_str function'''
     l = get_random_review(n, seed)
     return map(clean_str, l)
 
 def proc_review_full():
-    '''output: nested list, each inner list is a list of words, all reviews are processed'''
+    '''output: nested list, each inner list is a list of words, all reviews included'''
     l = get_review_full()
     print 'all reviews are loaded'
     print '='*100
@@ -85,8 +87,8 @@ def proc_review_full():
 
 # function set 2. for getting nested list
 def org_tuple(name, z):
-    '''input: beer name, list of tuple
-       output: list of words for a single beer, all reviews considered'''
+    '''input: beer name, list of tuple (first element of tuple is beer name, second element is words list)
+       output: word list for a single beer, all reviews considered'''
     ls = []
     for i in z:
         if i[0] == name:
@@ -94,8 +96,9 @@ def org_tuple(name, z):
     return [item for sublist in ls for item in sublist]
 
 def group_words(name_lst, rev_lst):
-    '''input: name list, revies list
-       output: list of tuple'''
+    '''input: beer name list, words list generated from proc_review_full function
+       output: list of tuple (first element of tuple is beer name,
+               second element is words list containing all reviews)'''
     assert len(name_lst) == len(rev_lst), 'name_lst must equal to rev_lst'
     z = zip(name_lst, rev_lst)
     s = list(set(name_lst))
@@ -131,7 +134,7 @@ def do_this_shit():
 
 
 def test_this_shit(n = 5, seed = 0):
-    '''test function'''
+    '''test the performance'''
     name_lst = np.random.choice(range(5), size = n, replace = True)
     rev_lst = proc_review_test(n, seed)
     return group_words(name_lst, rev_lst)

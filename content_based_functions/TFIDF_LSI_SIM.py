@@ -30,7 +30,7 @@ def TFIDF_LSI_SIM(texts, ntopics = 500, filter_threshold = 10):
     index = similarities.MatrixSimilarity(lsi[corpus])
 
     # returns dictionary and index
-    return textDict, index
+    return textDict, index， tfidf[corpus]
 
 ##### Test Case #####
 if __name__ == '__main__':

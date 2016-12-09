@@ -1,4 +1,9 @@
-################### td-idf then LSI finally similarity matrix ###################
+'''
+Performs TF-IDF on a nested list using gensim modules
+Feed tf-idf into LSI model to reduce dimension
+and finally compute similarity matrix
+Written by NC on 12/08/16 for NYCDSA Beer Recommendation Project
+'''
 
 from gensim import corpora, models, similarities
 import collections
@@ -6,19 +11,13 @@ import collections
 ### Input to function is a nested list (of tokens) where each inner list is a document ###
 def TFIDF_LSI_SIM(texts, ntopics = 500, filter_threshold = 10):
 
-    # Flatten list to one large list of words
+    # Flatten list to 1D, counts frequency of words and then filters low freq
     textsFlatten = [item for sublist in texts for item in sublist]
-
-    # Dictionary of word frequency count
     freq = collections.Counter(textsFlatten)
-
-    # Filter out low frequency items (maintain nested list format)
     texts_filtered = [[item for item in text if freq[item] > filter_threshold] for text in texts]
 
-    # Convert texts to corpora's dictionary object
+    # Convert texts to dictionary, then to bag of words
     textDict = corpora.Dictionary(texts_filtered)
-
-    # list of bag of words
     corpus = [textDict.doc2bow(text) for text in texts_filtered]
 
     # Build tf-idf model from corpus text
@@ -30,6 +29,7 @@ def TFIDF_LSI_SIM(texts, ntopics = 500, filter_threshold = 10):
     # Compute similarity matrix (cosine similarity)
     index = similarities.MatrixSimilarity(lsi[corpus])
 
+    # returns dictionary and index
     return textDict, index
 
 ##### Test Case #####

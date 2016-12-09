@@ -1,7 +1,7 @@
 # Spell Checker using Microsoft Cognitive Services API
 # Takes in a nested list of words for each review and
 # replaces misspelled words.
-# Outputs a nested list of words.
+# Outputs a nested list of words in a pickle.
 # API limited to 5000 calls/month and 7 calls/minute,
 # 10,000 characters per call on free trial.
 # Written by LC 12/08/16 for NYCDSA Beer Recommendation Project
@@ -77,12 +77,12 @@ def spellCheckMCSrepl(text, headers, url) :
 
 
 # start here
-# nested_list = [['the','graet','car'], ['the', 'blck', 'fontain'], ['is beautiful']]
+nested_list = [['the','graet','car'], ['the', 'blck', 'fontain'], ['is beautiful']]
 # print nested_list
 string_words = ''
 nchar = 0
 ncalls = 0
-master_list = []
+fully_edited_list = []
 
 # send string in chunks up to 10,000 chars
 for ls in nested_list:
@@ -93,7 +93,7 @@ for ls in nested_list:
         if ncalls > 7:
             time.sleep(60)
             ncalls = 0
-        master_list.extend(spellCheckMCSrepl(string_words, header_vals, url_link))
+        fully_edited_list.extend(spellCheckMCSrepl(string_words, header_vals, url_link))
         string_words = ''
         nchar = 0
 
@@ -103,10 +103,11 @@ for ls in nested_list:
 
 # remaining words in queue
 if string_words != '':
-    master_list.extend(spellCheckMCSrepl(string_words, header_vals, url_link))
+    fully_edited_list.extend(spellCheckMCSrepl(string_words, header_vals, url_link))
 
 
-pickle.dump(master_list, ("spellchecked.txt", "wb"))
+with open("spellchecked.pickle", "wb") as f:
+    pickle.dump(fully_edited_list, f)
     
 # shelved; for file input. Would have to change code to handle list instead of nested list.
 #with f.open('wordlist.txt', 'r') as wordlist: 
@@ -121,10 +122,10 @@ pickle.dump(master_list, ("spellchecked.txt", "wb"))
         else:
             string_words += word
             nchar += len(word)
-
+    
 if string_words != '':
     spellCheckMCS(string_words, header_vals, url_link)
-
+'''
 
 
 

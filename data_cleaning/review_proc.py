@@ -14,10 +14,10 @@ import pickle
 # function set 1. get nested list of words
 def get_review_full():
     '''output: list, with each element being a review str'''
-    part1 = pd.read_csv('github/ScrapedData/beerreview1_13.csv', usecols = ['review'])
-    part2 = pd.read_csv('github/ScrapedData/beerreview14_26.csv', usecols = ['review'])
-    part3 = pd.read_csv('github/ScrapedData/beerreview27_39.csv', usecols = ['review'])
-    part4 = pd.read_csv('github/ScrapedData/beerreview40_51.csv', usecols = ['review'])
+    part1 = pd.read_csv('github/Scraped_Review_Data/beerreview1_13.csv', usecols = ['review'])
+    part2 = pd.read_csv('github/Scraped_Review_Data/beerreview14_26.csv', usecols = ['review'])
+    part3 = pd.read_csv('github/Scraped_Review_Data/beerreview27_39.csv', usecols = ['review'])
+    part4 = pd.read_csv('github/Scraped_Review_Data/beerreview40_51.csv', usecols = ['review'])
     full = pd.concat([part1, part2, part3, part4], axis = 0, ignore_index = True)
     return ['' if type(x) is not str else x for x in list(full['review'])]
 
@@ -34,16 +34,16 @@ def get_random_review(n = 20, seed = 0):
     r0 = int(np.random.choice(lst0, size = 1)[0])
     r1 = lst1[r0]
     r2 = list(np.random.choice(range(lst2[r0]), size = n, replace = False))
-    rev = list(pd.read_csv('github/ScrapedData/beerreview' + r1, usecols = ['review'])['review'])
+    rev = list(pd.read_csv('github/Scraped_Review_Data/beerreview' + r1, usecols = ['review'])['review'])
     rev = ['' if type(x) is not str else x for x in rev]
     return [rev[x] for x in r2]
 
 def get_beername_full():
     '''output: list of beer names. Each element is a beer name'''
-    part1 = pd.read_csv('github/ScrapedData/beerreview1_13.csv', usecols = ['beer_name'])
-    part2 = pd.read_csv('github/ScrapedData/beerreview14_26.csv', usecols = ['beer_name'])
-    part3 = pd.read_csv('github/ScrapedData/beerreview27_39.csv', usecols = ['beer_name'])
-    part4 = pd.read_csv('github/ScrapedData/beerreview40_51.csv', usecols = ['beer_name'])
+    part1 = pd.read_csv('github/Scraped_Review_Data/beerreview1_13.csv', usecols = ['beer_name'])
+    part2 = pd.read_csv('github/Scraped_Review_Data/beerreview14_26.csv', usecols = ['beer_name'])
+    part3 = pd.read_csv('github/Scraped_Review_Data/beerreview27_39.csv', usecols = ['beer_name'])
+    part4 = pd.read_csv('github/Scraped_Review_Data/beerreview40_51.csv', usecols = ['beer_name'])
     full = pd.concat([part1, part2, part3, part4], axis = 0, ignore_index = True)
     print 'beer name loaded'
     print '='*100
@@ -53,14 +53,15 @@ def get_beername_full():
 def clean_str(s):
     '''input: review str
        output: list of words after proper cleaning'''
-    s = s.lower().replace('\xe2\x80\x99', '\'').replace('|', ' ').\
-        replace('\r', ' ').replace('\n', ' ').replace('/', ' ')
+    s = s.lower().replace('\xe2\x80\x99', '\'').replace('|', ' ')\
+        .replace('\r', ' ').replace('\n', ' ').replace('/', ' ').replace('@', ' ')
     s = re.sub('[.:\',\-!;"()?]', '', s)
     lst = re.sub('\s+', ' ', s).strip().split(' ')
-    stop_words = set(stopwords.words('english') + stopwords.words('german') + ['&'])
+    stop_words = set(stopwords.words('english') + stopwords.words('german') + ['&', ''])
     lst = [word for word in lst if word not in stop_words]
     lmtizer = WordNetLemmatizer()
-    lst = map(lambda x: lmtizer.lemmatize(x.decode('utf-8')).encode('ascii', 'ignore'), lst)
+    lst = map(lambda x: lmtizer.lemmatize(x.decode('utf-8', 'ignore')).encode('utf-8', 'ignore'), lst)
+    lst = [word for word in lst if word != '']
     return lst
 
 def proc_review_test(n = 20, seed = 0):
@@ -77,8 +78,8 @@ def proc_review_full():
     i = 0
     for review in l:
         result.append(clean_str(review))
-        i += 1
         print 'number of review finished:', i
+        i += 1
     return result
 
 
@@ -134,7 +135,7 @@ def do_this_shit():
 
 
 def test_this_shit(n = 5, seed = 0):
-    '''test the performance'''
+    '''test the performance of group_words function'''
     name_lst = np.random.choice(range(5), size = n, replace = True)
     rev_lst = proc_review_test(n, seed)
     return group_words(name_lst, rev_lst)
@@ -143,14 +144,7 @@ def test_this_shit(n = 5, seed = 0):
 
 
 
-
-
-
-
-
-
-
-# function set 3. spell check assist
+# function set 3. other functions
 
 ## input a list of words, return the sum of individual word length + space between words
 def count_lst_chr(lst):
@@ -159,5 +153,11 @@ def count_lst_chr(lst):
         l += len(i)
     return l + len(lst) - 1
 
+#a = pickle.load( open( "back_up/words_lst.p", "rb" ) )
+#print 'finished'
 
 
+## input a string, remove parenthesis and everything inside, and filter the weird characters
+## returns a cleaned version of string
+def clean_user_name(s):
+    return ''.join(e for e in re.sub('\([^)]*\)', '', s) if e.isalnum())

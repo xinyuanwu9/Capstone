@@ -1,5 +1,5 @@
 # Capstone
 for capstone project
 
-### Folder Ratebeer
-Folder Ratebeer contains code for web scraping using Scrapy  
+### Web Scraping
+Folder Ratebeer contains code for web scraping using Scrapy. Folder Web_scraped_data contains the data scraped.

@@ -7,7 +7,7 @@
 ### Spellcheck
 Remove empty strings  
 Recode unicode?  
-Retain alphanumeric and \s for unicode  
+Retain alphanumeric (unicode included) and '  
 Check for misspellings versus American English, French, and German  
 Run initial spell-check:  
 manually detect and include a list of common beer terms to prevent detection as misspellings  

@@ -10,9 +10,9 @@ def clean_str(s):
        output: cleaned str'''
     #print s
     s = ''.join(e for e in s if e.isalnum())
-    s = s.decode('utf-8', 'ignore').encode('utf-8', 'ignore').lower()
+    s = s.decode('utf-8', 'ignore').encode('ascii', 'ignore').lower()
     lmtizer = WordNetLemmatizer()
-    s = lmtizer.lemmatize(s)
+    s = lmtizer.lemmatize(s).encode('ascii', 'ignore')
     return s
 
 def clean_lst(l):

@@ -9,13 +9,13 @@
             {
                 "name": "run2",
                 "epochs": 100,
-                "batch_size": 1,
+                "batch_size": 10,
                 "number_hidden": 100,
                 "ks": [1],
                 "momentums": [0.5, 0.6],
-                "l_w": [0.01],
-                "l_v": [0.01],
-                "l_h": [0.01],
+                "l_w": [0.001],
+                "l_v": [0.001],
+                "l_h": [0.001],
                 "decay": 0.0001
             }
         ]

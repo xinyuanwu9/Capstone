@@ -1,7 +1,7 @@
 import numpy as np
 import theano
 import theano.tensor as T
-import theano.sparse
+#import theano.sparse
 
 
 x = T.matrix()

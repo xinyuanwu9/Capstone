@@ -1,32 +1,139 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1 class="page-header">What Beer to See?</h1>
-    <div class="form-group">
-
+    <h1 class="page-header">Wanna try some new beers that fit your taste?</h1>
+    <!--<div class="form-group">-->
+    <!--</div>-->
+    <div class="col-lg-12">
+        <form method="POST" action="">
+            <label>Type in your favorite beer:</label>
+            <input list="beers" name="beer_inp">
+                <datalist id="beers">
+                    {% for beer in beerlist %}
+                    <option>{{ beer }}</option>
+                    {% endfor %}
+                </datalist>
+            <input type="submit">
+        </form>
     </div>
-
-    <form method="POST" action="">
-        <input list="beers" name="beer_inp">
-            <datalist id="beers">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
-            </datalist>
-        <input type="submit">
-    </form>
     <!--<form method="POST" action="">-->
 
         <!--<input type="submit">-->
     <!--</form>-->
-
-    {% if cb_rec %}
-        {% for rec in cb_rec %}
-            <h4>{{ rec }}</h4>
-        {% endfor %}
-    {% endif %}
+    <div class="col-lg-12">
+        <!--<div class="panel panel-default">-->
+            <!--<div class="panel-heading">-->
+                <!--<h4 class="panel-title">-->
+                    <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Key words of this beer:</a>-->
+                <!--</h4>-->
+            <!--</div>-->
+            <!--<div id="collapseOne" class="panel-collapse collapse in">-->
+                <!--<div class="panel-body">-->
+                    <!--{{ key_words }}-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <b>Key words of this beer:</b>
+            </div>
+            <div class="panel-body">
+                <p>{{ key_words }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Our Recommendations:
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th><i>#</i></th>
+                            <th><i>Beer Name</i></th>
+                            <th><i>Brewer</i></th>
+                            <th><i>Style</i></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="success">
+                            <td><b>1</b></td>
+                            <td><b>Mark</b></td>
+                            <td><b>Otto</b></td>
+                            <td><b>@mdo</b></td>
+                        </tr>
+                        <tr class="info">
+                            <td><b>2</b></td>
+                            <td><b>Jacob</b></td>
+                            <td><b>Thornton</b></td>
+                            <td><b>@fat</b></td>
+                        </tr>
+                        <tr class="warning">
+                            <td><b>3</b></td>
+                            <td><b>Larry</b></td>
+                            <td><b>the Bird</b></td>
+                            <td><b>@twitter</b></td>
+                        </tr>
+                        <tr class="danger">
+                            <td>4</td>
+                            <td>John</td>
+                            <td>Smith</td>
+                            <td>@jsmith</td>
+                        </tr>
+                        <tr class="success">
+                            <td>5</td>
+                            <td>John</td>
+                            <td>Smith</td>
+                            <td>@jsmith</td>
+                        </tr>
+                        <tr class="info">
+                            <td>6</td>
+                            <td>John</td>
+                            <td>Smith</td>
+                            <td>@jsmith</td>
+                        </tr>
+                        <tr class="warning">
+                            <td>7</td>
+                            <td>John</td>
+                            <td>Smith</td>
+                            <td>@jsmith</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>8</td>
+                            <td>John</td>
+                            <td>Smith</td>
+                            <td>@jsmith</td>
+                        </tr>
+                        <tr class="success">
+                            <td>9</td>
+                            <td>John</td>
+                            <td>Smith</td>
+                            <td>@jsmith</td>
+                        </tr>
+                        <tr class="info">
+                            <td>10</td>
+                            <td>John</td>
+                            <td>Smith</td>
+                            <td>@jsmith</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!--{% if cb_rec %}-->
+        <!--{% for rec in cb_rec %}-->
+            <!--<h4>{{ rec }}</h4>-->
+        <!--{% endfor %}-->
+    <!--{% endif %}-->
     <!--<script>-->
 
     <!--</script>-->

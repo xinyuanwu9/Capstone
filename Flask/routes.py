@@ -4,6 +4,7 @@ import pickle
 
 app = Flask(__name__)
 
+
 @app.route("/")
 @app.route("/index.html")
 def index():
@@ -19,22 +20,25 @@ def content():
         beer_list = pickle.load(bf)
     with open("./model/CB/index.p", "rb") as idxf:
         index = pickle.load(idxf)
+    with open("./model/CB/corpus_tfidf.p", "rb") as corpus_t:
+        corpus_tfidf = pickle.load(corpus_t)
+    with open("./model/CB/textDict.p", "rb") as tD:
+        textDict = pickle.load(tD)
 
-    # beer_inp = None
+    if request.method == "GET":
+        return render_template("content.html", beerlist=beer_list)
 
-    # if form.validate():
-    print "456"
+    beer_inp = None
     if request.method == "POST" and "beer_inp" in request.form:
         beer_inp = request.form["beer_inp"]
-
-        cb_rec = get_similar_beers(beer_inp, beer_list, index)
-        print str(cb_rec)
-
-        return render_template("content.html", cb_rec=cb_rec)
-
-    else:
-        # print "123"
-        return render_template("content.html")
+        if beer_inp == '':
+            return render_template("content.html", beerlist=beer_list)
+        else:
+            cb_rec = get_similar_beers(beer_inp, beer_list, index)
+            key_words = get_beer_keywords(beer_inp, corpus_tfidf, beer_list, textDict, ntop=10)
+            key_words = map(lambda x: x.decode('utf-8', 'ignore').encode('ascii', 'ignore'), key_words)
+            key_words = ', '.join(key_words)
+            return render_template("content.html", beerlist=beer_list, cb_rec=cb_rec, key_words=key_words)
 
 @app.route("/collab.html")
 def collab():

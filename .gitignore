@@ -60,3 +60,5 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+data_cleaning/data_for_CF/ratings_svdpp.npy

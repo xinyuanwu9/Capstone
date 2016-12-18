@@ -47,7 +47,7 @@ def get_data():
     'Grab data, compute implicit matrix, and do train-test split'
 
     # Grab data using dataio functions
-    df = dataio.read_process("../Capstone/data_cleaning/data_for_CF/user_item_rating_fac.csv", sep=",")
+    df = dataio.read_process("../data_cleaning/data_for_CF/user_item_rating_fac.csv", sep=",")
 
     # Compute implicit matrix
     implicit_mat = df.pivot(index='user', columns='item', values='rate').notnull().as_matrix().astype(float)

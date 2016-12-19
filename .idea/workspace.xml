@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aaf0982e-e42a-4763-94ad-9e1c178f9046" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/content_based_engine/beer_keyword_gen.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CF_models/.idea/workspace.xml" afterPath="$PROJECT_DIR$/CF_models/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TF-recomm-master-CV/.idea/workspace.xml" afterPath="$PROJECT_DIR$/TF-recomm-master-CV/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TF-recomm-master-CV/svd_train_val.py" afterPath="$PROJECT_DIR$/TF-recomm-master-CV/svd_train_val.py" />
     </list>
     <ignored path="TF-recomm-master.iws" />
     <ignored path=".idea/workspace.xml" />

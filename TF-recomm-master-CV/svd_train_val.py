@@ -55,7 +55,7 @@ def get_data():
     # Perform data shuffle
     rows = len(df)
     sample_index = np.random.permutation(rows)
-    df = df.iloc[sample_index].reset_index(drop=True)
+    #df = df.iloc[sample_index].reset_index(drop=True)
 
     # Train-test split
     split_index = int(rows * 0.9)
@@ -240,6 +240,17 @@ if __name__ == '__main__':
 
     full_end = time.time()
     print(full_start-full_end)
+
+
+    # Save correct ratings
+    '''df_train, df_test, feedback_u = get_data()
+    ratings_pred = np.load('ratings_mat.npy')
+    df_mat = df_train.pivot(index='user', columns='item', values='rate').as_matrix().astype(float)
+    missing_mat = df_train.pivot(index='user', columns='item', values='rate').isnull().as_matrix().astype(float)
+    ratings_final = np.nan_to_num(df_mat) + missing_mat*ratings_pred
+
+    np.save('ratings_svdpp',ratings_final)'''
+
 
 
     

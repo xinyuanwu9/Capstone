@@ -90,6 +90,8 @@ def get_support_files():
     pickle.dump(corpus_tfidf, open('corpus_tfidf.p', 'wb'))
     print 'results dumped'
 
+
+
 if __name__ == "__main__":
 
     if 'beer_list' not in locals():
@@ -116,7 +118,6 @@ if __name__ == "__main__":
     print 'top 10 recommending beers are:'
     print get_similar_beers(beer_select,
                             beer_list, index, ntop=10)
-
 
 
 
